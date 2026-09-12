@@ -201,7 +201,7 @@ JobTrack is a terminal-based application for students to organize and track job 
 **Then** JobTrack reports that no matching application exists  
 **And** continues running normally
 
-### User Story 6 - Main Menu Navigation
+### User Story 6 - CLI Navigation and Menu
 
 - **Type:** Essential
 - **Story points:** 2
@@ -240,18 +240,18 @@ JobTrack is a terminal-based application for students to organize and track job 
 **Then** JobTrack terminates normally  
 **And** does not display an unexpected error
 
-### User Story 7 - Validate Application Input
+### User Story 7 - CLI Integration for Application Operations
 
 - **Type:** Essential
 - **Story points:** 3
-- **Primary owner:** Yash Jugade
+- **Primary owner:** Varsha Goalla
 - **Sprint:** 3
 
 **As a** student,  
 **I want to** receive clear validation when I enter invalid application information,  
 **so that I can** correct mistakes before saving or modifying an application.
 
-#### Acceptance Criterion 1 - Validate company name
+#### Acceptance Criterion 1 - View Application Statistics
 
 **Given** I am entering an application  
 **When** I provide a valid company name  
@@ -279,11 +279,44 @@ JobTrack is a terminal-based application for students to organize and track job 
 **And** displays an appropriate error message  
 **And** allows me to enter the position again
 
-### User Story 8 - Persist Applications
+
+### User Story 8 - Application Statistics
 
 - **Type:** Essential
 - **Story points:** 3
 - **Primary owner:** Varsha Goalla
+- **Sprint:** 3
+
+**As a** student,  
+**I want to** view a summary of my applications by status,  
+**so that I can** understand my progress through the hiring process.
+
+#### Acceptance Criterion 1 - Display application totals
+
+**Given** applications exist  
+**When** I select Application Statistics  
+**Then** JobTrack displays the total number of applications
+
+#### Acceptance Criterion 2 - Display status counts
+
+**Given** applications with different statuses exist  
+**When** I select Application Statistics  
+**Then** JobTrack displays the number of applications with each status  
+**And** includes Applied, Interview, Offer, and Rejected
+
+#### Acceptance Criterion 3 - Handle an empty collection
+
+**Given** there are no applications  
+**When** I select Application Statistics  
+**Then** JobTrack displays zero applications  
+**And** displays zero for each status  
+**And** continues running normally
+
+### User Story 9 - Persist Applications
+
+- **Type:** Essential
+- **Story points:** 3
+- **Primary owner:** Yash Jugade
 - **Sprint:** 3
 
 **As a** student,  
@@ -318,43 +351,12 @@ JobTrack is a terminal-based application for students to organize and track job 
 **Then** JobTrack starts normally  
 **And** displays an empty application collection
 
-### User Story 9 - Application Statistics
 
-- **Type:** Essential
-- **Story points:** 3
-- **Primary owner:** Yash Jugade
-- **Sprint:** 3
-
-**As a** student,  
-**I want to** view a summary of my applications by status,  
-**so that I can** understand my progress through the hiring process.
-
-#### Acceptance Criterion 1 - Display application totals
-
-**Given** applications exist  
-**When** I select Application Statistics  
-**Then** JobTrack displays the total number of applications
-
-#### Acceptance Criterion 2 - Display status counts
-
-**Given** applications with different statuses exist  
-**When** I select Application Statistics  
-**Then** JobTrack displays the number of applications with each status  
-**And** includes Applied, Interview, Offer, and Rejected
-
-#### Acceptance Criterion 3 - Handle an empty collection
-
-**Given** there are no applications  
-**When** I select Application Statistics  
-**Then** JobTrack displays zero applications  
-**And** displays zero for each status  
-**And** continues running normally
-
-### User Story 10 - Export Applications
+### User Story 10 - Export Applications to CSV
 
 - **Type:** Optional Stretch
 - **Story points:** 3
-- **Primary owner:** Varsha Goalla
+- **Primary owner:** Yash Jugade
 - **Sprint:** 3
 
 **As a** student,  
