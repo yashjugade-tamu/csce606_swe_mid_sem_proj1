@@ -63,4 +63,17 @@ describe JobTrack::Application do
   end
 
 
+
+  it 'accepts every permitted status' do
+    JobTrack::Application::STATUSES.each do |status|
+      expect(build_application(status: status).status).to eq(status)
+    end
+  end
+
+  it 'normalizes the case of a permitted status' do
+    expect(build_application(status: 'interview').status).to eq('Interview')
+  end
+  
+
+
 end
