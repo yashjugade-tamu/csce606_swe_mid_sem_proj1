@@ -29,6 +29,14 @@ module JobTrack
       raise ValidationError, 'Application ID must be a whole number'
     end
 
+    def validate_required_text(value, field_name)
+      text = value.to_s.strip
+      raise ValidationError, "#{field_name} cannot be empty" if text.empty?
+
+      text
+    end
+
+
   end
     
 end
