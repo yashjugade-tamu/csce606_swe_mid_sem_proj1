@@ -36,5 +36,23 @@ describe JobTrack::Application do
   end
 
 
+  it 'rejects an empty company' do
+    expect { build_application(company: '  ') }
+      .to raise_error(JobTrack::ValidationError, 'Company cannot be empty')
+  end
+
+  it 'rejects an empty position' do
+    expect { build_application(position: '') }
+      .to raise_error(JobTrack::ValidationError, 'Position cannot be empty')
+  end
+
+  it 'rejects missing company and position values with field-specific errors' do
+    expect { build_application(company: nil) }
+      .to raise_error(JobTrack::ValidationError, 'Company cannot be empty')
+    expect { build_application(position: nil) }
+      .to raise_error(JobTrack::ValidationError, 'Position cannot be empty')
+  end
+
+
   
 end
