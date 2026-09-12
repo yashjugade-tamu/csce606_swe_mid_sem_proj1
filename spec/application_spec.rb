@@ -30,5 +30,11 @@ describe JobTrack::Application do
       .to raise_error(JobTrack::ValidationError, /valid date/)
   end
 
+  it 'rejects an invalid status' do
+    expect { build_application(status: 'Waiting') }
+      .to raise_error(JobTrack::ValidationError, /Applied, Interview, Offer, Rejected/)
+  end
+
+
   
 end
