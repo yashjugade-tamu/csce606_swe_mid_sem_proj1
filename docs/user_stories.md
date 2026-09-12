@@ -200,3 +200,218 @@ JobTrack is a terminal-based application for students to organize and track job 
 **When** I attempt to delete an application  
 **Then** JobTrack reports that no matching application exists  
 **And** continues running normally
+
+### User Story 6 - Main Menu Navigation
+
+- **Type:** Essential
+- **Story points:** 2
+- **Primary owner:** Varsha Goalla
+- **Sprint:** 2
+
+**As a** student,  
+**I want to** use a clear main menu to select JobTrack functions,  
+**so that I can** easily navigate the application without confusion.
+
+#### Acceptance Criterion 1 - Display main menu
+
+**Given** I start JobTrack  
+**When** the application is ready  
+**Then** JobTrack displays the main menu  
+**And** shows the available application management options
+
+#### Acceptance Criterion 2 - Select a valid menu option
+
+**Given** the main menu is displayed  
+**When** I select a valid menu option  
+**Then** JobTrack opens the corresponding function
+
+#### Acceptance Criterion 3 - Reject an invalid menu option
+
+**Given** the main menu is displayed  
+**When** I enter an invalid menu option  
+**Then** JobTrack displays an appropriate error message  
+**And** displays the main menu again  
+**And** continues running normally
+
+#### Acceptance Criterion 4 - Exit the application
+
+**Given** the main menu is displayed  
+**When** I select the exit option  
+**Then** JobTrack terminates normally  
+**And** does not display an unexpected error
+
+### User Story 7 - Validate Application Input
+
+- **Type:** Essential
+- **Story points:** 3
+- **Primary owner:** Yash Jugade
+- **Sprint:** 3
+
+**As a** student,  
+**I want to** receive clear validation when I enter invalid application information,  
+**so that I can** correct mistakes before saving or modifying an application.
+
+#### Acceptance Criterion 1 - Validate company name
+
+**Given** I am entering an application  
+**When** I provide a valid company name  
+**Then** JobTrack accepts the company name
+
+#### Acceptance Criterion 2 - Reject empty company name
+
+**Given** I am entering an application  
+**When** I leave the company name empty  
+**Then** JobTrack rejects the input  
+**And** displays an appropriate error message  
+**And** allows me to enter the company name again
+
+#### Acceptance Criterion 3 - Validate position
+
+**Given** I am entering an application  
+**When** I provide a valid position  
+**Then** JobTrack accepts the position
+
+#### Acceptance Criterion 4 - Reject empty position
+
+**Given** I am entering an application  
+**When** I leave the position empty  
+**Then** JobTrack rejects the input  
+**And** displays an appropriate error message  
+**And** allows me to enter the position again
+
+### User Story 8 - Persist Applications
+
+- **Type:** Essential
+- **Story points:** 3
+- **Primary owner:** Varsha Goalla
+- **Sprint:** 3
+
+**As a** student,  
+**I want to** have my applications saved between JobTrack sessions,  
+**so that I can** continue tracking my applications without losing previously entered information.
+
+#### Acceptance Criterion 1 - Save an application
+
+**Given** I have entered a valid application  
+**When** I save the application  
+**Then** JobTrack stores the application  
+**And** preserves its ID, company, position, application date, and status
+
+#### Acceptance Criterion 2 - Load saved applications
+
+**Given** previously saved applications exist  
+**When** I start JobTrack  
+**Then** JobTrack loads the saved applications  
+**And** makes them available through the application menu
+
+#### Acceptance Criterion 3 - Preserve multiple applications
+
+**Given** multiple applications have been saved  
+**When** I restart JobTrack  
+**Then** all previously saved applications are available  
+**And** each application retains its original information
+
+#### Acceptance Criterion 4 - Handle no saved data
+
+**Given** no saved applications exist  
+**When** I start JobTrack  
+**Then** JobTrack starts normally  
+**And** displays an empty application collection
+
+### User Story 9 - Application Statistics
+
+- **Type:** Essential
+- **Story points:** 3
+- **Primary owner:** Yash Jugade
+- **Sprint:** 3
+
+**As a** student,  
+**I want to** view a summary of my applications by status,  
+**so that I can** understand my progress through the hiring process.
+
+#### Acceptance Criterion 1 - Display application totals
+
+**Given** applications exist  
+**When** I select Application Statistics  
+**Then** JobTrack displays the total number of applications
+
+#### Acceptance Criterion 2 - Display status counts
+
+**Given** applications with different statuses exist  
+**When** I select Application Statistics  
+**Then** JobTrack displays the number of applications with each status  
+**And** includes Applied, Interview, Offer, and Rejected
+
+#### Acceptance Criterion 3 - Handle an empty collection
+
+**Given** there are no applications  
+**When** I select Application Statistics  
+**Then** JobTrack displays zero applications  
+**And** displays zero for each status  
+**And** continues running normally
+
+### User Story 10 - Export Applications
+
+- **Type:** Optional Stretch
+- **Story points:** 3
+- **Primary owner:** Varsha Goalla
+- **Sprint:** 3
+
+**As a** student,  
+**I want to** export my saved applications to a file,  
+**so that I can** keep a backup or use my application information outside JobTrack.
+
+#### Acceptance Criterion 1 - Successfully export applications
+
+**Given** one or more applications are saved  
+**When** I select the export option  
+**Then** JobTrack creates an export file  
+**And** includes each application's ID, company, position, application date, and status
+
+#### Acceptance Criterion 2 - Export multiple applications
+
+**Given** multiple applications exist  
+**When** I export the applications  
+**Then** every application is included in the export file  
+**And** each application remains separately identifiable
+
+#### Acceptance Criterion 3 - Handle an empty collection
+
+**Given** there are no applications  
+**When** I select the export option  
+**Then** JobTrack displays a message that there are no applications to export  
+**And** does not terminate unexpectedly
+
+#### Acceptance Criterion 4 - Report export errors
+
+**Given** JobTrack cannot create or write to the export file  
+**When** I attempt to export applications  
+**Then** JobTrack displays an appropriate error message  
+**And** continues running normally
+
+## Story-Point and Ownership Summary
+
+| Sprint | Story | Feature | Owner | Type | Points |
+| --- | --- | --- | --- | --- | ---: |
+| 1 | User Story 1 | Add a Job Application | Varsha Goalla | Essential | 5 |
+| 1 | User Story 2 | View All Applications | Yash Jugade | Essential | 3 |
+| 2 | User Story 3 | Search Applications | Yash Jugade | Essential | 3 |
+| 2 | User Story 4 | Update Application Status | Varsha Goalla | Essential | 3 |
+| 2 | User Story 5 | Delete an Application | Yash Jugade | Essential | 2 |
+| 2 | User Story 6 | CLI Navigation and Menu | Varsha Goalla | Essential | 2 |
+| 2 | User Story 7 | CLI Integration for Application Operations | Varsha Goalla | Essential | 3 |
+| 3 | User Story 8 | View Application Statistics | Varsha Goalla | Essential | 2 |
+| 3 | User Story 9 | Persistent JSON Storage | Yash Jugade | Essential | 4 |
+| 3 | User Story 10 | Export Applications to CSV | Yash Jugade | Optional | 3 |
+|  |  | *Varsha total* |  |  | *15* |
+|  |  | *Yash total* |  |  | *15* |
+|  |  | *Team total* |  |  | *30* |
+
+## Sprint Summary
+
+| Sprint | Varsha | Yash | Total |
+| --- | --- | --- | ---: |
+| 1 | User Story 1 (5) | User Story 2 (3) | 8 |
+| 2 | User Story 4 (3), User Story 6 (2), User Story 7 (3) | User Story 3 (3), User Story 5 (2) | 13 |
+| 3 | User Story 8 (2) | User Story 9 (4), User Story 10 (3) | 9 |
+|  | *15 points* | *15 points* | *30* |
