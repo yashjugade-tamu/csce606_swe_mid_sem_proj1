@@ -54,5 +54,13 @@ describe JobTrack::Application do
   end
 
 
-  
+
+  it 'rejects an invalid ID' do
+    expect { build_application(id: 0) }
+      .to raise_error(JobTrack::ValidationError, 'Application ID must be positive')
+    expect { build_application(id: 'invalid') }
+      .to raise_error(JobTrack::ValidationError, 'Application ID must be a whole number')
+  end
+
+
 end
