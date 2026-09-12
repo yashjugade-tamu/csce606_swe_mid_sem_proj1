@@ -1,0 +1,6 @@
+/.bundle/
+/.rubocop_cache/
+/coverage/
+/vendor/bundle/
+/spec/examples.txt
+*.tmp
