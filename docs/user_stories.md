@@ -203,193 +203,194 @@ JobTrack is a terminal-based application for students to organize and track job 
 
 ### User Story 6 - CLI Navigation and Menu
 
-- **Type:** Essential
-- **Story points:** 2
-- **Primary owner:** Varsha Goalla
-- **Sprint:** 2
+- *Type:* Essential
+- *Story points:* 2
+- *Primary owner:* Varsha Goalla
+- *Sprint:* 2
 
-**As a** student,  
-**I want to** use a clear main menu to select JobTrack functions,  
-**so that I can** easily navigate the application without confusion.
+*As a* student,  
+*I want to* use a clear command-line menu,  
+*so that I can* easily navigate between JobTrack's functions.
 
-#### Acceptance Criterion 1 - Display main menu
+#### Acceptance Criterion 1 - Display the main menu
 
-**Given** I start JobTrack  
-**When** the application is ready  
-**Then** JobTrack displays the main menu  
-**And** shows the available application management options
+*Given* I start JobTrack  
+*When* the application starts  
+*Then* JobTrack displays the available operations  
+*And* includes Add, View, Search, Update, Delete, Statistics, and Exit
 
-#### Acceptance Criterion 2 - Select a valid menu option
+#### Acceptance Criterion 2 - Select an operation
 
-**Given** the main menu is displayed  
-**When** I select a valid menu option  
-**Then** JobTrack opens the corresponding function
+*Given* the main menu is displayed  
+*When* I select a valid menu option  
+*Then* JobTrack starts the corresponding operation  
+*And* displays the prompts needed for that operation
 
-#### Acceptance Criterion 3 - Reject an invalid menu option
+#### Acceptance Criterion 3 - Reject an invalid menu selection
 
-**Given** the main menu is displayed  
-**When** I enter an invalid menu option  
-**Then** JobTrack displays an appropriate error message  
-**And** displays the main menu again  
-**And** continues running normally
+*Given* the main menu is displayed  
+*When* I enter an invalid option  
+*Then* JobTrack displays an appropriate error message  
+*And* returns to the main menu
 
-#### Acceptance Criterion 4 - Exit the application
+#### Acceptance Criterion 4 - Continue using JobTrack
 
-**Given** the main menu is displayed  
-**When** I select the exit option  
-**Then** JobTrack terminates normally  
-**And** does not display an unexpected error
+*Given* an operation has completed  
+*When* the operation finishes  
+*Then* JobTrack returns to the main menu  
+*And* terminates only when I select Exit
 
 ### User Story 7 - CLI Integration for Application Operations
 
-- **Type:** Essential
-- **Story points:** 3
-- **Primary owner:** Varsha Goalla
-- **Sprint:** 3
+- *Type:* Essential
+- *Story points:* 3
+- *Primary owner:* Varsha Goalla
+- *Sprint:* 2
 
-**As a** student,  
-**I want to** receive clear validation when I enter invalid application information,  
-**so that I can** correct mistakes before saving or modifying an application.
+*As a* student,  
+*I want to* have the CLI guide me through application-management operations,  
+*so that I can* use JobTrack without interacting directly with its internal classes.
 
-#### Acceptance Criterion 1 - View Application Statistics
+#### Acceptance Criterion 1 - Complete application operations through the CLI
 
-**Given** I am entering an application  
-**When** I provide a valid company name  
-**Then** JobTrack accepts the company name
+*Given* JobTrack's main menu is displayed  
+*When* I select Add, View, Search, Update, or Delete  
+*Then* the CLI collects the required input  
+*And* calls the appropriate ApplicationManager method  
+*And* displays the result of the operation
 
-#### Acceptance Criterion 2 - Reject empty company name
+#### Acceptance Criterion 2 - Keep business logic outside the CLI
 
-**Given** I am entering an application  
-**When** I leave the company name empty  
-**Then** JobTrack rejects the input  
-**And** displays an appropriate error message  
-**And** allows me to enter the company name again
+*Given* an application-management operation is requested  
+*When* the CLI receives the user's input  
+*Then* the CLI delegates the operation to ApplicationManager  
+*And* does not implement application business rules itself
 
-#### Acceptance Criterion 3 - Validate position
+#### Acceptance Criterion 3 - Handle operation errors through the CLI
 
-**Given** I am entering an application  
-**When** I provide a valid position  
-**Then** JobTrack accepts the position
+*Given* an operation receives invalid input  
+*When* ApplicationManager reports the error  
+*Then* the CLI displays an understandable error message  
+*And* allows me to continue using JobTrack
 
-#### Acceptance Criterion 4 - Reject empty position
+## Sprint 3 - Statistics, Persistence, and Export
 
-**Given** I am entering an application  
-**When** I leave the position empty  
-**Then** JobTrack rejects the input  
-**And** displays an appropriate error message  
-**And** allows me to enter the position again
+### User Story 8 - View Application Statistics
 
+- *Type:* Essential
+- *Story points:* 2
+- *Primary owner:* Varsha Goalla
+- *Sprint:* 3
 
-### User Story 8 - Application Statistics
+*As a* student,  
+*I want to* view the total number of applications and a breakdown by status,  
+*so that I can* understand the progress of my job search.
 
-- **Type:** Essential
-- **Story points:** 3
-- **Primary owner:** Varsha Goalla
-- **Sprint:** 3
+#### Acceptance Criterion 1 - Display total applications and status breakdown
 
-**As a** student,  
-**I want to** view a summary of my applications by status,  
-**so that I can** understand my progress through the hiring process.
+*Given* applications exist  
+*When* I select Application Statistics  
+*Then* JobTrack displays the total number of applications  
+*And* displays counts for Applied, Interview, Offer, and Rejected
 
-#### Acceptance Criterion 1 - Display application totals
+#### Acceptance Criterion 2 - Calculate statistics correctly
 
-**Given** applications exist  
-**When** I select Application Statistics  
-**Then** JobTrack displays the total number of applications
+*Given* there are 2 Applied, 1 Interview, 1 Offer, and 1 Rejected application  
+*When* I view statistics  
+*Then* JobTrack displays a total of 5  
+*And* displays counts of 2, 1, 1, and 1 for the respective statuses
 
-#### Acceptance Criterion 2 - Display status counts
+#### Acceptance Criterion 3 - Display statistics for an empty collection
 
-**Given** applications with different statuses exist  
-**When** I select Application Statistics  
-**Then** JobTrack displays the number of applications with each status  
-**And** includes Applied, Interview, Offer, and Rejected
+*Given* there are no applications  
+*When* I view statistics  
+*Then* JobTrack displays a total of 0  
+*And* displays 0 for every status
 
-#### Acceptance Criterion 3 - Handle an empty collection
+### User Story 9 - Persistent JSON Storage
 
-**Given** there are no applications  
-**When** I select Application Statistics  
-**Then** JobTrack displays zero applications  
-**And** displays zero for each status  
-**And** continues running normally
+- *Type:* Essential
+- *Story points:* 4
+- *Primary owner:* Yash Jugade
+- *Sprint:* 3
 
-### User Story 9 - Persist Applications
+*As a* student,  
+*I want to* have my application data saved to and loaded from a JSON file,  
+*so that I can* preserve my applications when I exit and restart JobTrack.
 
-- **Type:** Essential
-- **Story points:** 3
-- **Primary owner:** Yash Jugade
-- **Sprint:** 3
+#### Acceptance Criterion 1 - Save applications
 
-**As a** student,  
-**I want to** have my applications saved between JobTrack sessions,  
-**so that I can** continue tracking my applications without losing previously entered information.
+*Given* applications exist  
+*When* JobTrack saves the application data  
+*Then* the applications are stored in a JSON file  
+*And* all required application fields are included
 
-#### Acceptance Criterion 1 - Save an application
+#### Acceptance Criterion 2 - Load applications at startup
 
-**Given** I have entered a valid application  
-**When** I save the application  
-**Then** JobTrack stores the application  
-**And** preserves its ID, company, position, application date, and status
+*Given* a JSON file containing applications exists  
+*When* JobTrack starts  
+*Then* it loads the applications into the collection  
+*And* makes them available to application operations
 
-#### Acceptance Criterion 2 - Load saved applications
+#### Acceptance Criterion 3 - Preserve application data
 
-**Given** previously saved applications exist  
-**When** I start JobTrack  
-**Then** JobTrack loads the saved applications  
-**And** makes them available through the application menu
+*Given* an application was saved  
+*When* JobTrack loads the application  
+*Then* its ID, company, position, application date, and status remain unchanged  
+*And* the restored application behaves like a newly created application
 
-#### Acceptance Criterion 3 - Preserve multiple applications
+#### Acceptance Criterion 4 - Handle first-time use
 
-**Given** multiple applications have been saved  
-**When** I restart JobTrack  
-**Then** all previously saved applications are available  
-**And** each application retains its original information
+*Given* no JSON file exists  
+*When* JobTrack starts  
+*Then* it starts with an empty collection  
+*And* does not terminate unexpectedly
 
-#### Acceptance Criterion 4 - Handle no saved data
+#### Acceptance Criterion 5 - Save before exit
 
-**Given** no saved applications exist  
-**When** I start JobTrack  
-**Then** JobTrack starts normally  
-**And** displays an empty application collection
-
+*Given* applications exist in the collection  
+*When* I select Exit  
+*Then* JobTrack saves the current application data  
+*And* terminates after the save completes
 
 ### User Story 10 - Export Applications to CSV
 
-- **Type:** Optional Stretch
-- **Story points:** 3
-- **Primary owner:** Yash Jugade
-- **Sprint:** 3
+- *Type:* Optional stretch feature
+- *Story points:* 3
+- *Primary owner:* Yash Jugade
+- *Sprint:* 3
 
-**As a** student,  
-**I want to** export my saved applications to a file,  
-**so that I can** keep a backup or use my application information outside JobTrack.
+*As a* student,  
+*I want to* export my application data to a CSV file,  
+*so that I can* use my JobTrack data in spreadsheet or data-analysis applications.
 
-#### Acceptance Criterion 1 - Successfully export applications
+#### Acceptance Criterion 1 - Export applications
 
-**Given** one or more applications are saved  
-**When** I select the export option  
-**Then** JobTrack creates an export file  
-**And** includes each application's ID, company, position, application date, and status
+*Given* applications exist  
+*When* I select Export to CSV  
+*Then* JobTrack creates a CSV file containing the application data  
+*And* reports where the file was saved
 
-#### Acceptance Criterion 2 - Export multiple applications
+#### Acceptance Criterion 2 - Export all required fields
 
-**Given** multiple applications exist  
-**When** I export the applications  
-**Then** every application is included in the export file  
-**And** each application remains separately identifiable
+*Given* an application is included in an export  
+*When* JobTrack writes the CSV file  
+*Then* the row contains ID, company, position, application date, and status  
+*And* the file contains an appropriate header row
 
 #### Acceptance Criterion 3 - Handle an empty collection
 
-**Given** there are no applications  
-**When** I select the export option  
-**Then** JobTrack displays a message that there are no applications to export  
-**And** does not terminate unexpectedly
+*Given* there are no applications  
+*When* I select Export to CSV  
+*Then* JobTrack handles the operation gracefully  
+*And* displays an appropriate message or creates a valid empty CSV
 
-#### Acceptance Criterion 4 - Report export errors
+#### Acceptance Criterion 4 - Initiate export through the CLI
 
-**Given** JobTrack cannot create or write to the export file  
-**When** I attempt to export applications  
-**Then** JobTrack displays an appropriate error message  
-**And** continues running normally
+*Given* the JobTrack menu is displayed  
+*When* I select Export to CSV  
+*Then* the CLI delegates the export to Storage  
+*And* displays the result of the export
 
 ## Story-Point and Ownership Summary
 
