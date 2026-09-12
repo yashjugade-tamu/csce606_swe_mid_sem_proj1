@@ -24,5 +24,11 @@ describe JobTrack::Application do
     expect(application.application_date).to eq(Date.new(2026, 8, 15))
     expect(application.status).to eq('Applied')
   end
+
+  it 'rejects an impossible date' do
+    expect { build_application(application_date: '2026-02-30') }
+      .to raise_error(JobTrack::ValidationError, /valid date/)
+  end
+
   
 end
