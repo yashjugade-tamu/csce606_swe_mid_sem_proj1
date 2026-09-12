@@ -18,5 +18,17 @@ module JobTrack
       @status = validate_status(status)
     end
 
+    private
+
+    def validate_id(value)
+      id = Integer(value)
+      raise ValidationError, 'Application ID must be positive' unless id.positive?
+
+      id
+    rescue ArgumentError, TypeError
+      raise ValidationError, 'Application ID must be a whole number'
+    end
+
+  end
     
 end
