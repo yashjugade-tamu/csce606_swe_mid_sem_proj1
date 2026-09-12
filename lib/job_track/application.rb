@@ -42,6 +42,13 @@ module JobTrack
       raise ValidationError, 'Application date must be a valid date in YYYY-MM-DD format'
     end
 
+    def validate_status(value)
+      status = STATUSES.find { |candidate| candidate.casecmp?(value.to_s.strip) }
+      raise ValidationError, "Status must be one of: #{STATUSES.join(', ')}" unless status
+
+      status
+    end
+
   end
     
 end
