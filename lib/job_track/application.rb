@@ -36,6 +36,11 @@ module JobTrack
       text
     end
 
+    def validate_date(value)
+      Date.iso8601(value.to_s)
+    rescue Date::Error
+      raise ValidationError, 'Application date must be a valid date in YYYY-MM-DD format'
+    end
 
   end
     
