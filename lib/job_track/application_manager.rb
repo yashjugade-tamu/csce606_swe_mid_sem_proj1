@@ -21,5 +21,33 @@ module JobTrack
       @next_id += 1
       application
     end
+
+    def read_all_applications
+      @applications.map do |application|
+        {
+          id: application.id,
+          company: application.company,
+          position: application.position,
+          application_date: application.application_date,
+          status: application.status
+        }
+      end
+    end
+
+    def print_applications(applications = read_all_applications)
+      if applications.empty?
+        puts 'No applications found.'
+        return
+      end
+
+      puts 'ID | Company | Position | Application Date | Status'
+      applications.each do |application|
+        date = application[:application_date].respond_to?(:strftime) ?
+          application[:application_date].strftime('%Y-%m-%d') :
+          application[:application_date]
+
+        puts "#{application[:id]} | #{application[:company]} | #{application[:position]} | #{date} | #{application[:status]}"
+      end
+    end
   end
 end
