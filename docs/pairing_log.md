@@ -59,3 +59,28 @@ Notes:
 - Added tests for multiple saved applications, the empty collection, and terminal
   printing without errors.
 
+## Session 3 — 2026-09-13
+
+Driver: Yash Jugade
+Navigator: Varsha Goalla
+
+Work completed:
+
+- Partially implemented User Story 3 on the US3-YJ branch.
+- Added search by company, position, and application status.
+- Added tests for matching results, no results, empty queries, and invalid search
+  fields.
+
+Notes:
+
+- Limited searchable fields to company, position, and status through
+  VALID_SEARCH_FIELDS.
+- Used case-insensitive partial matching so users can search without entering the
+  complete value or matching capitalization exactly.
+- Returned search results as hashes with the same five fields used by
+  read_all_applications, then reused print_applications for display.
+- Returned an empty array and displayed an explanatory message for blank input,
+  invalid fields, or no matching applications so the program can continue safely.
+- Kept the story In Progress because commit 3eb59a8 remains on US3-YJ and has
+  not been merged into main; CLI search prompts will be completed with the CLI
+  integration stories.
