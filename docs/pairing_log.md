@@ -66,7 +66,7 @@ Navigator: Varsha Goalla
 
 Work completed:
 
-- Partially implemented User Story 3 on the US3-YJ branch.
+- Implemented User Story 3 on the US3-YJ branch.
 - Added search by company, position, and application status.
 - Added tests for matching results, no results, empty queries, and invalid search
   fields.
