@@ -95,7 +95,8 @@ module JobTrack
     end
 
     def delete_application
-      prompt('Application ID')
+      application = @manager.delete_application(prompt('Application ID'))
+      @output.puts "Application ##{application.id} deleted successfully."
     end
 
     def application_statistics
