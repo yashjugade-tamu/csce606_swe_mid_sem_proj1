@@ -147,6 +147,6 @@
 | 9 | Persistent JSON Storage | Yash Jugade | TODO | 4 |
 | 10 | Export Applications to CSV | Yash Jugade | TODO | 3 |
 
-*Completed:* 19 points  
-*Remaining:* 11 points  
+*Completed:* 21 points  
+*Remaining:* 9 points  
 *Total:* 30 points
