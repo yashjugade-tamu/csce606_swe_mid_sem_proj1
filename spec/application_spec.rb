@@ -73,7 +73,66 @@ describe JobTrack::Application do
   it 'normalizes the case of a permitted status' do
     expect(build_application(status: 'interview').status).to eq('Interview')
   end
-  
 
+  describe '#update_status' do
+    it 'updates the application to a valid new status' do
+      application = build_application
+
+      application.update_status('Interview')
+
+      expect(application.status).to eq('Interview')
+    end
+
+    it 'accepts every permitted status' do
+      application = build_application
+
+      described_class::STATUSES.each do |status|
+        expect(application.update_status(status).status).to eq(status)
+      end
+    end
+
+    it 'normalizes the case of a permitted status' do
+      application = build_application
+
+      expect(application.update_status('offer').status).to eq('Offer')
+    end
+
+    it 'preserves all non-status application information' do
+      application = build_application
+      original_information = [
+        application.id,
+        application.company,
+        application.position,
+        application.application_date
+      ]
+
+      application.update_status('Rejected')
+
+      expect([
+        application.id,
+        application.company,
+        application.position,
+        application.application_date
+      ]).to eq(original_information)
+    end
+
+    it 'rejects an unsupported status and keeps the original status' do
+      application = build_application
+
+      expect { application.update_status('Waiting') }
+        .to raise_error(JobTrack::ValidationError, /Applied, Interview, Offer, Rejected/)
+      expect(application.status).to eq('Applied')
+    end
+
+    it 'rejects blank or missing statuses without changing the application' do
+      application = build_application
+
+      ['', '   ', nil].each do |invalid_status|
+        expect { application.update_status(invalid_status) }
+          .to raise_error(JobTrack::ValidationError, /Applied, Interview, Offer, Rejected/)
+        expect(application.status).to eq('Applied')
+      end
+    end
+  end
 
 end

@@ -81,6 +81,35 @@ Notes:
   read_all_applications, then reused print_applications for display.
 - Returned an empty array and displayed an explanatory message for blank input,
   invalid fields, or no matching applications so the program can continue safely.
-- Kept the story In Progress because commit 3eb59a8 remains on US3-YJ and has
-  not been merged into main; CLI search prompts will be completed with the CLI
-  integration stories.
+- Completed and merged the User Story 3 search functionality. CLI search prompts
+  will be completed with the later CLI integration stories.
+
+## Session 4 — 2026-09-20
+
+Driver: Varsha Goalla
+
+Navigator: Yash Jugade
+
+Work completed:
+
+- Implemented the application-status update behavior for User Story 4 on the
+  `US4` branch.
+- Added `Application#update_status` and
+  `ApplicationManager#update_application_status`.
+- Added tests for successful updates, all permitted statuses, invalid statuses,
+  invalid IDs, and preservation of existing application information.
+
+Notes:
+
+- Followed a test-first workflow by adding basic status-update examples before
+  implementing the two update methods.
+- Reused the existing status validation so updates accept only Applied,
+  Interview, Offer, or Rejected and normalize capitalization consistently.
+- Validated a new status before assigning it, ensuring an invalid update leaves
+  the application's original status unchanged.
+- Allowed numeric IDs supplied as strings so the manager can support future
+  terminal input while continuing to store IDs as integers.
+- Raised `JobTrack::ValidationError` for unsupported statuses and missing,
+  malformed, or unknown application IDs.
+- Confirmed that a successful update changes only the selected application's
+  status and preserves its ID, company, position, and application date.

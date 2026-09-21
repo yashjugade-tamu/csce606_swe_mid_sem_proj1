@@ -18,6 +18,11 @@ module JobTrack
       @status = validate_status(status)
     end
 
+    def update_status(new_status)
+      @status = validate_status(new_status)
+      self
+    end
+
     private
 
     def validate_id(value)

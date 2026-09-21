@@ -131,4 +131,77 @@ describe JobTrack::ApplicationManager do
     expect(manager.applications).to be_empty
     expect(add_application.id).to eq(1)
   end
+
+  describe '#update_application_status' do
+    it 'updates the application identified by ID' do
+      application = add_application
+
+      updated_application = manager.update_application_status(application.id, 'Interview')
+
+      expect(updated_application).to equal(application)
+      expect(application.status).to eq('Interview')
+    end
+
+    it 'accepts a numeric ID entered as a string' do
+      application = add_application
+
+      manager.update_application_status(application.id.to_s, 'Offer')
+
+      expect(application.status).to eq('Offer')
+    end
+
+    it 'accepts every permitted status' do
+      application = add_application
+
+      JobTrack::Application::STATUSES.each do |status|
+        expect(manager.update_application_status(application.id, status).status).to eq(status)
+      end
+    end
+
+    it 'preserves other fields and does not modify another application' do
+      application = add_application
+      other_application = add_application(company: 'Netflix', status: 'Offer')
+      original_information = [
+        application.company,
+        application.position,
+        application.application_date
+      ]
+
+      manager.update_application_status(application.id, 'Rejected')
+
+      expect([
+        application.company,
+        application.position,
+        application.application_date
+      ]).to eq(original_information)
+      expect(other_application.status).to eq('Offer')
+    end
+
+    it 'rejects an unsupported status and keeps the original status' do
+      application = add_application
+
+      expect { manager.update_application_status(application.id, 'Waiting') }
+        .to raise_error(JobTrack::ValidationError, /Applied, Interview, Offer, Rejected/)
+      expect(application.status).to eq('Applied')
+    end
+
+    it 'rejects an unknown ID without modifying any application' do
+      first = add_application
+      second = add_application(company: 'Netflix', status: 'Interview')
+
+      expect { manager.update_application_status(999, 'Offer') }
+        .to raise_error(JobTrack::ValidationError, 'Application with ID 999 was not found')
+      expect([first.status, second.status]).to eq(['Applied', 'Interview'])
+    end
+
+    it 'rejects malformed or missing IDs without modifying the collection' do
+      application = add_application
+
+      ['unknown', '', nil].each do |invalid_id|
+        expect { manager.update_application_status(invalid_id, 'Offer') }
+          .to raise_error(JobTrack::ValidationError, /was not found/)
+        expect(application.status).to eq('Applied')
+      end
+    end
+  end
 end
