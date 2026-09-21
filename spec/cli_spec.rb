@@ -3,12 +3,13 @@ require_relative 'spec_helper'
 describe JobTrack::CLI do
   subject(:cli) do
     described_class.new(
-      manager: JobTrack::ApplicationManager.new,
+      manager: manager,
       input: input,
       output: output
     )
   end
 
+  let(:manager) { JobTrack::ApplicationManager.new }
   let(:output) { StringIO.new }
   let(:input) { StringIO.new(input_text) }
 
@@ -79,6 +80,17 @@ describe JobTrack::CLI do
     context "when option #{selection} is selected" do
       let(:input_text) { example[:input] }
 
+      before do
+        next unless selection == '4'
+
+        manager.add_application(
+          company: 'Google',
+          position: 'Software Engineer',
+          application_date: '2026-09-20',
+          status: 'Applied'
+        )
+      end
+
       it 'accepts the selection and returns to the main menu' do
         cli.run
 
@@ -129,6 +141,119 @@ describe JobTrack::CLI do
     it 'terminates normally' do
       expect { cli.run }.not_to raise_error
       expect(output.string).to end_with("Goodbye!\n")
+    end
+  end
+
+  describe 'application-operation integration' do
+    context 'when an application is added and then viewed' do
+      let(:input_text) do
+        "1\nGoogle\nSoftware Engineer\n2026-09-20\nApplied\n2\n7\n"
+      end
+
+      it 'delegates creation and displays the saved application' do
+        cli.run
+
+        expect(output.string).to match(/Google.*Software Engineer.*Applied/)
+        expect(manager.applications.length).to eq(1)
+        expect(output.string).to include('Application #1 added successfully.')
+      end
+    end
+
+    context 'when applications are searched' do
+      let(:input_text) { "3\ncompany\nGoogle\n7\n" }
+
+      before do
+        manager.add_application(
+          company: 'Google',
+          position: 'Software Engineer',
+          application_date: '2026-09-20',
+          status: 'Applied'
+        )
+      end
+
+      it 'delegates the search and displays matching applications' do
+        cli.run
+
+        expect(output.string).to match(/Google.*Software Engineer.*Applied/)
+      end
+    end
+
+    context 'when an application status is updated' do
+      let(:input_text) { "4\n1\nInterview\n7\n" }
+
+      before do
+        manager.add_application(
+          company: 'Google',
+          position: 'Software Engineer',
+          application_date: '2026-09-20',
+          status: 'Applied'
+        )
+      end
+
+      it 'delegates the update and displays the updated application' do
+        cli.run
+
+        expect(manager.applications.first.status).to eq('Interview')
+        expect(output.string).to include('Application #1 status updated to Interview.')
+      end
+    end
+
+    context 'when View is selected with an empty collection' do
+      let(:input_text) { "2\n7\n" }
+
+      it 'displays the empty-collection result' do
+        cli.run
+
+        expect(output.string).to include('No applications found.')
+      end
+    end
+
+    context 'when an operation receives invalid input' do
+      let(:input_text) do
+        "1\nGoogle\nSoftware Engineer\n2026-02-30\nApplied\n7\n"
+      end
+
+      it 'displays the manager error and returns to the menu' do
+        expect { cli.run }.not_to raise_error
+        expect(output.string).to include('Error: Application date must be a valid date')
+        expect(output.string).not_to include('Add Application completed.')
+        expect(output.string.scan('JobTrack Main Menu').length).to eq(2)
+      end
+    end
+
+    context 'when a search value is empty' do
+      let(:input_text) { "3\ncompany\n\n7\n" }
+
+      it 'displays the validation error without completing the operation' do
+        cli.run
+
+        expect(output.string).to include('Error: Search value cannot be empty.')
+        expect(output.string).not_to include('Search Applications completed.')
+        expect(output.string.scan('JobTrack Main Menu').length).to eq(2)
+      end
+    end
+
+    context 'when a search has no matching applications' do
+      let(:input_text) { "3\ncompany\nAmazon\n7\n" }
+
+      it 'displays the no-results message and completes normally' do
+        cli.run
+
+        expect(output.string).to include('No matching applications found.')
+        expect(output.string).to include('Search Applications completed.')
+      end
+    end
+
+    context 'when an update uses an unknown application ID' do
+      let(:input_text) { "4\n999\nInterview\n7\n" }
+
+      it 'displays the manager error without completing the operation' do
+        cli.run
+
+        expect(output.string).to include('Error: Application with ID 999 was not found')
+        expect(output.string).not_to include('Update Application Status completed.')
+        expect(output.string.scan('JobTrack Main Menu').length).to eq(2)
+      end
     end
   end
 end
