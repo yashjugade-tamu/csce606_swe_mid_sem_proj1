@@ -174,3 +174,30 @@ Notes:
   1 Offer, and 1 Rejected application, plus an all-zero empty state.
 - Confirmed the full project suite passes with 59 examples and 100% statement
   coverage.
+
+## Session 7 — 2026-09-21
+
+Driver: Yash Jugade
+
+Navigator: Varsha Goalla
+
+Work completed:
+
+- Implemented User Story 8's delete-application behavior for the `US8` branch.
+- Added `ApplicationManager#delete_application` to remove a matching application
+  by ID while raising `JobTrack::ValidationError` for unknown or malformed IDs.
+- Connected the Delete Application menu option to the manager and added success
+  output for a deleted record.
+- Added manager tests for successful deletion, numeric-string IDs, and preserving
+  other applications when an invalid ID is rejected.
+- Updated the CLI spec to seed an application before deleting it and verified the
+  delete flow behaves correctly in the menu interface.
+
+Notes:
+
+- Followed the same pattern as update status: validate the ID, find the matching
+  object, and raise a consistent `ValidationError` when the ID does not exist.
+- Kept the delete operation atomic by removing only the selected application and
+  leaving every other application untouched.
+- Validated deletion through the manager and CLI flows, then confirmed the focused
+  RSpec run passes with 47 examples and 0 failures.
