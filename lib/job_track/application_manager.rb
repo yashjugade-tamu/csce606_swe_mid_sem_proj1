@@ -34,6 +34,17 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
 
+    def delete_application(application_id)
+      normalized_id = Integer(application_id)
+      application = applications.find { |candidate| candidate.id == normalized_id }
+      raise ValidationError, "Application with ID #{application_id} was not found" unless application
+
+      applications.delete(application)
+      application
+    rescue ArgumentError, TypeError
+      raise ValidationError, "Application with ID #{application_id} was not found"
+    end
+
     def application_statistics
       status_counts = Application::STATUSES.to_h { |status| [status, 0] }
       applications.each { |application| status_counts[application.status] += 1 }

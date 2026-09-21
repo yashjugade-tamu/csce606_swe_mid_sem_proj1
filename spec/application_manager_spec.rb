@@ -212,6 +212,37 @@ describe JobTrack::ApplicationManager do
     end
   end
 
+  describe '#delete_application' do
+    it 'removes the application identified by ID and leaves other applications intact' do
+      first = add_application
+      second = add_application(company: 'Netflix', status: 'Interview')
+
+      deleted = manager.delete_application(first.id)
+
+      expect(deleted).to equal(first)
+      expect(manager.applications).to contain_exactly(second)
+      expect(manager.read_all_applications.map { |application| application[:id] }).to eq([second.id])
+    end
+
+    it 'accepts a numeric ID entered as a string' do
+      application = add_application
+
+      deleted = manager.delete_application(application.id.to_s)
+
+      expect(deleted).to equal(application)
+      expect(manager.applications).to be_empty
+    end
+
+    it 'rejects an unknown ID without deleting any other application' do
+      first = add_application
+      second = add_application(company: 'Netflix', status: 'Interview')
+
+      expect { manager.delete_application(999) }
+        .to raise_error(JobTrack::ValidationError, 'Application with ID 999 was not found')
+      expect(manager.applications).to contain_exactly(first, second)
+    end
+  end
+
   describe '#application_statistics' do
     it 'returns the total and a count for every application status' do
       add_application

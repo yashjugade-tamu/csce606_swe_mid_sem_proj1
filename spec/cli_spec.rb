@@ -81,7 +81,7 @@ describe JobTrack::CLI do
       let(:input_text) { example[:input] }
 
       before do
-        next unless selection == '4'
+        next unless %w[4 5].include?(selection)
 
         manager.add_application(
           company: 'Google',
