@@ -256,4 +256,47 @@ describe JobTrack::CLI do
       end
     end
   end
+
+  describe 'application statistics' do
+    let(:input_text) { "6\n7\n" }
+
+    context 'when applications exist in every status' do
+      before do
+        ['Applied', 'Applied', 'Interview', 'Offer', 'Rejected'].each_with_index do |status, index|
+          manager.add_application(
+            company: "Company #{index + 1}",
+            position: 'Software Engineer',
+            application_date: '2026-09-20',
+            status: status
+          )
+        end
+      end
+
+      it 'displays the total and exact status breakdown' do
+        cli.run
+
+        expect(output.string).to include(
+          'Total Applications: 5',
+          'Applied: 2',
+          'Interview: 1',
+          'Offer: 1',
+          'Rejected: 1'
+        )
+      end
+    end
+
+    context 'when the application collection is empty' do
+      it 'displays zero for the total and every status' do
+        cli.run
+
+        expect(output.string).to include(
+          'Total Applications: 0',
+          'Applied: 0',
+          'Interview: 0',
+          'Offer: 0',
+          'Rejected: 0'
+        )
+      end
+    end
+  end
 end
