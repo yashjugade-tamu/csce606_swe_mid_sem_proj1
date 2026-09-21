@@ -24,6 +24,16 @@ module JobTrack
       application
     end
 
+    def update_application_status(application_id, new_status)
+      normalized_id = Integer(application_id)
+      application = applications.find { |candidate| candidate.id == normalized_id }
+      raise ValidationError, "Application with ID #{application_id} was not found" unless application
+
+      application.update_status(new_status)
+    rescue ArgumentError, TypeError
+      raise ValidationError, "Application with ID #{application_id} was not found"
+    end
+
     def read_all_applications
       @applications.map do |application|
         {
