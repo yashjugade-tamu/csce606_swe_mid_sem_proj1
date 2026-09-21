@@ -131,4 +131,17 @@ describe JobTrack::ApplicationManager do
     expect(manager.applications).to be_empty
     expect(add_application.id).to eq(1)
   end
+
+  describe '#update_application_status' do
+    it 'updates the application identified by ID' do
+      application = add_application
+
+      updated_application = manager.update_application_status(application.id, 'Interview')
+
+      expect(updated_application).to equal(application)
+      expect(application.status).to eq('Interview')
+    end
+
+    
+  end
 end
