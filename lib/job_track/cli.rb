@@ -99,7 +99,11 @@ module JobTrack
     end
 
     def application_statistics
-      nil
+      statistics = @manager.application_statistics
+      @output.puts "Total Applications: #{statistics[:total]}"
+      statistics[:status_counts].each do |status, count|
+        @output.puts "#{status}: #{count}"
+      end
     end
 
     def prompt(label)
