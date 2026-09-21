@@ -54,6 +54,14 @@ describe JobTrack::ApplicationManager do
     expect { manager.print_applications }.not_to raise_error
   end
 
+  it 'prints to a supplied output stream with a custom empty message' do
+    output = StringIO.new
+
+    manager.print_applications([], output: output, empty_message: 'Nothing matched.')
+
+    expect(output.string).to eq("Nothing matched.\n")
+  end
+
   it 'searches applications by company and only returns matching applications' do
     add_application
     add_application(company: 'Netflix', position: 'Data Scientist', status: 'Interview')
@@ -87,24 +95,23 @@ describe JobTrack::ApplicationManager do
     expect(results.first[:company]).to eq('Netflix')
   end
 
-  it 'prints a no matching applications message when a search has no results' do
+  it 'returns an empty result when a search has no matches' do
     add_application
 
-    expect { manager.search_applications('Amazon', field: 'company') }
-      .to output(/No matching applications found/).to_stdout
+    expect(manager.search_applications('Amazon', field: 'company')).to eq([])
   end
 
-  it 'handles invalid or empty search values safely' do
+  it 'rejects invalid or empty search values' do
     add_application
 
     expect { manager.search_applications('', field: 'company') }
-      .to output(/Invalid search input/).to_stdout
+      .to raise_error(JobTrack::ValidationError, 'Search value cannot be empty.')
 
     expect { manager.search_applications('   ', field: 'company') }
-      .to output(/Invalid search input/).to_stdout
+      .to raise_error(JobTrack::ValidationError, 'Search value cannot be empty.')
 
     expect { manager.search_applications('Google', field: 'unknown') }
-      .to output(/Invalid search field/).to_stdout
+      .to raise_error(JobTrack::ValidationError, 'Invalid search field.')
   end
 
   it 'does not add or consume an ID for an invalid application' do

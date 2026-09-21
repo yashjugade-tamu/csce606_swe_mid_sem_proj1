@@ -69,7 +69,7 @@
 
 ## User Story 6 - CLI Navigation and Menu
 
-*Status:* TODO  
+*Status:* DONE  
 *Story points:* 2  
 *Primary owner:* Varsha Goalla  
 *Issue:* [#6](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/6)
@@ -82,7 +82,7 @@
 
 ## User Story 7 - CLI Integration for Application Operations
 
-*Status:* TODO  
+*Status:* DONE  
 *Story points:* 3  
 *Primary owner:* Varsha Goalla  
 *Issue:* [#7](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/7)
@@ -141,12 +141,12 @@
 | 3 | Search Applications | Yash Jugade | DONE | 3 |
 | 4 | Update Application Status | Varsha Goalla | DONE | 3 |
 | 5 | Delete an Application | Yash Jugade | TODO | 2 |
-| 6 | CLI Navigation and Menu | Varsha Goalla | TODO | 2 |
-| 7 | CLI Integration for Application Operations | Varsha Goalla | TODO | 3 |
+| 6 | CLI Navigation and Menu | Varsha Goalla | DONE | 2 |
+| 7 | CLI Integration for Application Operations | Varsha Goalla | DONE | 3 |
 | 8 | View Application Statistics | Varsha Goalla | TODO | 2 |
 | 9 | Persistent JSON Storage | Yash Jugade | TODO | 4 |
 | 10 | Export Applications to CSV | Yash Jugade | TODO | 3 |
 
-*Completed:* 14 points  
-*Remaining:* 16 points  
+*Completed:* 19 points  
+*Remaining:* 11 points  
 *Total:* 30 points
