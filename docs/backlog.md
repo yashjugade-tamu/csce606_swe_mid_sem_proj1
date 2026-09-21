@@ -56,7 +56,7 @@
 
 ## User Story 5 - Delete an Application
 
-**Status:** TODO  
+**Status:** DONE  
 **Story points:** 2  
 **Primary owner:** Yash Jugade  
 **Issue:** [#5](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/5)
@@ -140,7 +140,7 @@
 | 2 | View All Applications | Yash Jugade | DONE | 3 |
 | 3 | Search Applications | Yash Jugade | DONE | 3 |
 | 4 | Update Application Status | Varsha Goalla | DONE | 3 |
-| 5 | Delete an Application | Yash Jugade | TODO | 2 |
+| 5 | Delete an Application | Yash Jugade | DONE | 2 |
 | 6 | CLI Navigation and Menu | Varsha Goalla | DONE | 2 |
 | 7 | CLI Integration for Application Operations | Varsha Goalla | DONE | 3 |
 | 8 | View Application Statistics | Varsha Goalla | DONE | 2 |
