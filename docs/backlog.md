@@ -43,7 +43,7 @@
 
 ## User Story 4 - Update Application Status
 
-**Status:** TODO  
+**Status:** DONE  
 **Story points:** 3  
 **Primary owner:** Varsha Goalla  
 **Issue:** [#4](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/4)
