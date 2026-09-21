@@ -243,6 +243,20 @@ describe JobTrack::ApplicationManager do
       )
     end
 
-    
+    it 'reflects the current status after an application is updated' do
+      application = add_application
+
+      manager.update_application_status(application.id, 'Interview')
+
+      expect(manager.application_statistics).to eq(
+        total: 1,
+        status_counts: {
+          'Applied' => 0,
+          'Interview' => 1,
+          'Offer' => 0,
+          'Rejected' => 0
+        }
+      )
+    end
   end
 end
