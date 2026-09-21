@@ -73,7 +73,16 @@ describe JobTrack::Application do
   it 'normalizes the case of a permitted status' do
     expect(build_application(status: 'interview').status).to eq('Interview')
   end
-  
 
+  describe '#update_status' do
+    it 'updates the application to a valid new status' do
+      application = build_application
+
+      application.update_status('Interview')
+
+      expect(application.status).to eq('Interview')
+    end
+
+  end
 
 end
