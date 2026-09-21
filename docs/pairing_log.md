@@ -142,3 +142,35 @@ Notes:
   statistics business logic yet.
 - The Delete and Application Statistics integrations will be completed after
   their corresponding manager functionality is available.
+
+## Session 6 — 2026-09-21
+
+Driver: Varsha Goalla
+
+Navigator: Yash Jugade
+
+Work completed:
+
+- Implemented User Story 8 on the `US8` branch.
+- Added `ApplicationManager#application_statistics` to calculate the total
+  number of applications and counts for Applied, Interview, Offer, and Rejected.
+- Connected the Application Statistics menu option to the manager calculation
+  and displayed the resulting breakdown through the CLI.
+- Added manager and CLI tests for populated and empty application collections.
+
+Notes:
+
+- Followed a test-first workflow by adding two manager examples and two CLI
+  examples before implementation, covering populated and empty collections.
+- Added the manager example for recalculating statistics after a status update
+  after the initial statistics implementation was complete.
+- Initialized every permitted status count to zero so the summary always shows
+  Applied, Interview, Offer, and Rejected, even when no applications exist in a
+  category.
+- Calculated statistics from the manager's current in-memory collection, so the
+  counts automatically reflect applications added or statuses updated earlier
+  in the same session.
+- Verified the required five-application example with 2 Applied, 1 Interview,
+  1 Offer, and 1 Rejected application, plus an all-zero empty state.
+- Confirmed the full project suite passes with 59 examples and 100% statement
+  coverage.
