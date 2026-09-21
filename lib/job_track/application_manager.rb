@@ -34,6 +34,16 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
 
+    def application_statistics
+      status_counts = Application::STATUSES.to_h { |status| [status, 0] }
+      applications.each { |application| status_counts[application.status] += 1 }
+
+      {
+        total: applications.length,
+        status_counts: status_counts
+      }
+    end
+
     def read_all_applications
       @applications.map do |application|
         {

@@ -211,4 +211,52 @@ describe JobTrack::ApplicationManager do
       end
     end
   end
+
+  describe '#application_statistics' do
+    it 'returns the total and a count for every application status' do
+      add_application
+      add_application(company: 'Netflix', status: 'Applied')
+      add_application(company: 'Amazon', status: 'Interview')
+      add_application(company: 'Apple', status: 'Offer')
+      add_application(company: 'Microsoft', status: 'Rejected')
+
+      expect(manager.application_statistics).to eq(
+        total: 5,
+        status_counts: {
+          'Applied' => 2,
+          'Interview' => 1,
+          'Offer' => 1,
+          'Rejected' => 1
+        }
+      )
+    end
+
+    it 'returns zero for the total and every status when the collection is empty' do
+      expect(manager.application_statistics).to eq(
+        total: 0,
+        status_counts: {
+          'Applied' => 0,
+          'Interview' => 0,
+          'Offer' => 0,
+          'Rejected' => 0
+        }
+      )
+    end
+
+    it 'reflects the current status after an application is updated' do
+      application = add_application
+
+      manager.update_application_status(application.id, 'Interview')
+
+      expect(manager.application_statistics).to eq(
+        total: 1,
+        status_counts: {
+          'Applied' => 0,
+          'Interview' => 1,
+          'Offer' => 0,
+          'Rejected' => 0
+        }
+      )
+    end
+  end
 end

@@ -95,7 +95,7 @@
 
 ## User Story 8 - View Application Statistics
 
-*Status:* TODO  
+*Status:* DONE  
 *Story points:* 2  
 *Primary owner:* Varsha Goalla  
 *Issue:* [#8](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/8)
@@ -143,7 +143,7 @@
 | 5 | Delete an Application | Yash Jugade | TODO | 2 |
 | 6 | CLI Navigation and Menu | Varsha Goalla | DONE | 2 |
 | 7 | CLI Integration for Application Operations | Varsha Goalla | DONE | 3 |
-| 8 | View Application Statistics | Varsha Goalla | TODO | 2 |
+| 8 | View Application Statistics | Varsha Goalla | DONE | 2 |
 | 9 | Persistent JSON Storage | Yash Jugade | TODO | 4 |
 | 10 | Export Applications to CSV | Yash Jugade | TODO | 3 |
 
