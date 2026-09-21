@@ -53,27 +53,45 @@ module JobTrack
       @output.puts "#{label} selected."
       send(action)
       @output.puts "#{label} completed."
+    rescue ValidationError => e
+      @output.puts "Error: #{e.message}"
     end
 
     def add_application
-      prompt('Company')
-      prompt('Position')
-      prompt('Application date (YYYY-MM-DD)')
-      prompt('Status (Applied/Interview/Offer/Rejected)')
+      application = @manager.add_application(
+        company: prompt('Company'),
+        position: prompt('Position'),
+        application_date: prompt('Application date (YYYY-MM-DD)'),
+        status: prompt('Status (Applied/Interview/Offer/Rejected)')
+      )
+      @output.puts "Application ##{application.id} added successfully."
     end
 
     def view_applications
-      nil
+      @manager.print_applications(
+        @manager.read_all_applications,
+        output: @output,
+        empty_message: 'No applications found.'
+      )
     end
 
     def search_applications
-      prompt('Search field (company/position/status)')
-      prompt('Search value')
+      field = prompt('Search field (company/position/status)')
+      query = prompt('Search value')
+      results = @manager.search_applications(query, field: field)
+      @manager.print_applications(
+        results,
+        output: @output,
+        empty_message: 'No matching applications found.'
+      )
     end
 
     def update_application_status
-      prompt('Application ID')
-      prompt('New status (Applied/Interview/Offer/Rejected)')
+      application = @manager.update_application_status(
+        prompt('Application ID'),
+        prompt('New status (Applied/Interview/Offer/Rejected)')
+      )
+      @output.puts "Application ##{application.id} status updated to #{application.status}."
     end
 
     def delete_application

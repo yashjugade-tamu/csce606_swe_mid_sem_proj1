@@ -50,15 +50,8 @@ module JobTrack
       search_field = field.to_s.strip
       search_value = query.to_s.strip
 
-      unless VALID_SEARCH_FIELDS.include?(search_field)
-        puts 'Invalid search field.'
-        return []
-      end
-
-      if search_value.empty?
-        puts 'Invalid search input. Please provide a non-empty search value.'
-        return []
-      end
+      raise ValidationError, 'Invalid search field.' unless VALID_SEARCH_FIELDS.include?(search_field)
+      raise ValidationError, 'Search value cannot be empty.' if search_value.empty?
 
       matching_applications = @applications.select do |application|
         application_value = application.public_send(search_field).to_s.downcase
@@ -75,28 +68,26 @@ module JobTrack
         }
       end
 
-      if results.empty?
-        puts 'No matching applications found.'
-        return []
-      end
-
-      print_applications(results)
       results
     end
 
-    def print_applications(applications = read_all_applications)
+    def print_applications(
+      applications = read_all_applications,
+      output: $stdout,
+      empty_message: 'No applications found.'
+    )
       if applications.empty?
-        puts 'No applications found.'
+        output.puts empty_message
         return
       end
 
-      puts 'ID | Company | Position | Application Date | Status'
+      output.puts 'ID | Company | Position | Application Date | Status'
       applications.each do |application|
         date = application[:application_date].respond_to?(:strftime) ?
           application[:application_date].strftime('%Y-%m-%d') :
           application[:application_date]
 
-        puts "#{application[:id]} | #{application[:company]} | #{application[:position]} | #{date} | #{application[:status]}"
+        output.puts "#{application[:id]} | #{application[:company]} | #{application[:position]} | #{date} | #{application[:status]}"
       end
     end
   end
