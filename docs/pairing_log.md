@@ -183,7 +183,7 @@ Navigator: Varsha Goalla
 
 Work completed:
 
-- Implemented User Story 8's delete-application behavior for the `US8` branch.
+- Implemented User Story 5's delete-application behavior for the `US5` branch.
 - Added `ApplicationManager#delete_application` to remove a matching application
   by ID while raising `JobTrack::ValidationError` for unknown or malformed IDs.
 - Connected the Delete Application menu option to the manager and added success
