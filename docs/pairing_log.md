@@ -113,3 +113,32 @@ Notes:
   malformed, or unknown application IDs.
 - Confirmed that a successful update changes only the selected application's
   status and preserves its ID, company, position, and application date.
+
+## Session 5 — 2026-09-21
+
+Driver: Varsha Goalla
+
+Navigator: Yash Jugade
+
+Work completed:
+
+- Implemented the command-line menu and navigation behavior for User Story 6.
+- Integrated Add, View, Search, and Update CLI workflows with
+  `ApplicationManager` for User Story 7.
+- Added operation prompts, selected/completed messages, validation-error
+  handling, and automatic return to the main menu.
+- Reused `ApplicationManager#print_applications` for View and Search output and
+  added support for injected output streams and custom empty-result messages.
+- Added CLI workflow and error-handling tests.
+
+Notes:
+
+- Add, View, Search, and Update are connected to their corresponding
+  `ApplicationManager` methods.
+- Delete currently collects an application ID and completes its menu flow, but
+  it is not connected to deletion business logic because the manager delete
+  method has not been implemented or merged yet.
+- Application Statistics completes its menu flow but is not connected to
+  statistics business logic yet.
+- The Delete and Application Statistics integrations will be completed after
+  their corresponding manager functionality is available.
