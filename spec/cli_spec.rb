@@ -257,6 +257,24 @@ describe JobTrack::CLI do
         expect(output.string.scan('JobTrack Main Menu').length).to eq(2)
       end
     end
+
+    context 'when the application exits after adding data' do
+      let(:input_text) { "1\nGoogle\nSoftware Engineer\n2026-09-20\nApplied\n7\n" }
+
+      it 'saves the current application collection before terminating' do
+        cli.run
+
+        saved_data = JSON.parse(File.read(manager.instance_variable_get(:@data_path)))
+        expect(saved_data).to include(
+          a_hash_including(
+            'company' => 'Google',
+            'position' => 'Software Engineer',
+            'status' => 'Applied'
+          )
+        )
+        expect(output.string).to include('Goodbye!')
+      end
+    end
   end
 
   describe 'application statistics' do
