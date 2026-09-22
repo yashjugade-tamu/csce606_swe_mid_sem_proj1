@@ -93,6 +93,10 @@ module JobTrack
       File.rename(temp_path, @data_path)
     end
 
+    def export_to_csv(output_path = nil)
+      CSVExporter.new.export(@applications, output_path: output_path)
+    end
+
     def application_statistics
       status_counts = Application::STATUSES.to_h { |status| [status, 0] }
       applications.each { |application| status_counts[application.status] += 1 }
