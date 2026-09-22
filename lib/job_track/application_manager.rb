@@ -1,4 +1,6 @@
 
+require 'json'
+
 module JobTrack
   # Owns the in-memory application collection and application business actions.
   class ApplicationManager
@@ -6,9 +8,13 @@ module JobTrack
 
     VALID_SEARCH_FIELDS = %w[company position status].freeze
 
-    def initialize
+    DEFAULT_DATA_PATH = 'data/applications.json'.freeze
+
+    def initialize(data_path: DEFAULT_DATA_PATH)
       @applications = []
       @next_id = 1
+      @data_path = data_path
+      load_from_json
     end
 
     def add_application(company:, position:, application_date:, status:)
@@ -21,6 +27,7 @@ module JobTrack
       )
       applications << application
       @next_id += 1
+      save_to_json
       application
     end
 
@@ -30,6 +37,8 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found" unless application
 
       application.update_status(new_status)
+      save_to_json
+      application
     rescue ArgumentError, TypeError
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
@@ -40,9 +49,48 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found" unless application
 
       applications.delete(application)
+      save_to_json
       application
     rescue ArgumentError, TypeError
       raise ValidationError, "Application with ID #{application_id} was not found"
+    end
+
+    def load_from_json
+      return unless File.exist?(@data_path)
+
+      raw_applications = JSON.parse(File.read(@data_path))
+      @applications = raw_applications.map do |entry|
+        Application.new(
+          id: entry['id'],
+          company: entry['company'],
+          position: entry['position'],
+          application_date: entry['application_date'],
+          status: entry['status']
+        )
+      end
+      @next_id = @applications.empty? ? 1 : @applications.map(&:id).max + 1
+    rescue JSON::ParserError
+      @applications = []
+      @next_id = 1
+    end
+
+    def save_to_json
+      directory = File.dirname(@data_path)
+      Dir.mkdir(directory) unless directory == '.' || Dir.exist?(directory)
+
+      temp_path = "#{@data_path}.tmp"
+      File.write(temp_path, JSON.pretty_generate(
+        @applications.map do |application|
+          {
+            'id' => application.id,
+            'company' => application.company,
+            'position' => application.position,
+            'application_date' => application.application_date.iso8601,
+            'status' => application.status
+          }
+        end
+      ))
+      File.rename(temp_path, @data_path)
     end
 
     def application_statistics
