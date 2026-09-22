@@ -3,5 +3,6 @@
 source 'http://rubygems.org'
 
 gem 'byebug'
+gem 'csv'
 gem 'guard-rspec'
 gem 'rspec'
