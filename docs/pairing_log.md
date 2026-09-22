@@ -201,3 +201,32 @@ Notes:
   leaving every other application untouched.
 - Validated deletion through the manager and CLI flows, then confirmed the focused
   RSpec run passes with 47 examples and 0 failures.
+
+## Session 8 — 2026-09-21
+
+Driver: Yash Jugade
+
+Navigator: Varsha Goalla
+
+Work completed:
+
+- Implemented User Story 9 for persistent JSON storage on the `US9` branch.
+- Added JSON save and load behavior to `ApplicationManager` so the application
+  collection persists across sessions.
+- Ensured saved records include the required fields: ID, company, position,
+  application date, and status.
+- Restored saved applications as real `Application` objects so they behave like
+  newly created records during subsequent operations.
+- Added manager and CLI tests covering saves, startup loads, first-time use with
+  no file present, and exit-time persistence.
+
+Notes:
+
+- Used a temporary file path in tests to keep persistence checks isolated from any
+  existing project data.
+- Stored JSON using a temp-file write and rename pattern to reduce the chance of
+  leaving a corrupted file behind during saves.
+- Loaded application data once during manager initialization, while continuing to
+  keep the in-memory collection as the active working state during the session.
+- Verified the full project suite passes with 66 examples and 0 failures after the
+  persistence update.

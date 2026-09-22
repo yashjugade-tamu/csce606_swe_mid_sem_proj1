@@ -108,7 +108,7 @@
 
 ## User Story 9 - Persistent JSON Storage
 
-*Status:* TODO  
+*Status:* DONE  
 *Story points:* 4  
 *Primary owner:* Yash Jugade  
 *Issue:* [#9](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/9)
@@ -144,9 +144,9 @@
 | 6 | CLI Navigation and Menu | Varsha Goalla | DONE | 2 |
 | 7 | CLI Integration for Application Operations | Varsha Goalla | DONE | 3 |
 | 8 | View Application Statistics | Varsha Goalla | DONE | 2 |
-| 9 | Persistent JSON Storage | Yash Jugade | TODO | 4 |
+| 9 | Persistent JSON Storage | Yash Jugade | DONE | 4 |
 | 10 | Export Applications to CSV | Yash Jugade | TODO | 3 |
 
-*Completed:* 21 points  
-*Remaining:* 9 points  
+*Completed:* 27 points  
+*Remaining:* 3 points  
 *Total:* 30 points
