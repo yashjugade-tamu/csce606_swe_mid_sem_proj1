@@ -121,7 +121,7 @@
 
 ## User Story 10 - Export Applications to CSV
 
-*Status:* TODO  
+*Status:* DONE  
 *Story points:* 3  
 *Primary owner:* Yash Jugade  
 *Issue:* [#10](https://github.com/yashjugade-tamu/csce606_swe_mid_sem_proj1/issues/10)
@@ -145,8 +145,8 @@
 | 7 | CLI Integration for Application Operations | Varsha Goalla | DONE | 3 |
 | 8 | View Application Statistics | Varsha Goalla | DONE | 2 |
 | 9 | Persistent JSON Storage | Yash Jugade | DONE | 4 |
-| 10 | Export Applications to CSV | Yash Jugade | TODO | 3 |
+| 10 | Export Applications to CSV | Yash Jugade | DONE | 3 |
 
-*Completed:* 27 points  
-*Remaining:* 3 points  
+*Completed:* 30 points  
+*Remaining:* 0 points  
 *Total:* 30 points
