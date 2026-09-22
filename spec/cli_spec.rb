@@ -1,7 +1,15 @@
 require_relative 'spec_helper'
 
 describe JobTrack::CLI do
-  let(:data_path) { File.join(Dir.mktmpdir, 'applications.json') }
+  let(:data_path) { File.join(__dir__, 'job_track_test_applications.json') }
+
+  before do
+    File.delete(data_path) if File.exist?(data_path)
+  end
+
+  after do
+    File.delete(data_path) if File.exist?(data_path)
+  end
 
   subject(:cli) do
     described_class.new(
@@ -28,6 +36,7 @@ describe JobTrack::CLI do
         'Update Application Status',
         'Delete Application',
         'Application Statistics',
+        'Export Applications to CSV',
         'Exit'
       )
     end
@@ -273,6 +282,45 @@ describe JobTrack::CLI do
           )
         )
         expect(output.string).to include('Goodbye!')
+      end
+    end
+
+    context 'when the application data is exported to CSV with a custom valid path' do
+      let(:custom_path) { File.join(__dir__, 'tmp_csv_export', 'custom_applications.csv') }
+      let(:input_text) { "8\n#{custom_path}\n7\n" }
+
+      before do
+        FileUtils.mkdir_p(File.dirname(custom_path))
+        manager.add_application(
+          company: 'Google',
+          position: 'Software Engineer',
+          application_date: '2026-09-20',
+          status: 'Applied'
+        )
+      end
+
+      after do
+        File.delete(custom_path) if File.exist?(custom_path)
+        Dir.rmdir(File.dirname(custom_path)) if Dir.exist?(File.dirname(custom_path)) && Dir.empty?(File.dirname(custom_path))
+      end
+
+      it 'writes the CSV to the provided file path' do
+        cli.run
+
+        expect(output.string).to include("CSV export saved to: #{custom_path}")
+        expect(File.exist?(custom_path)).to be(true)
+      end
+    end
+
+    context 'when the application data export path is invalid' do
+      let(:invalid_path) { File.join(__dir__, 'missing_folder', 'applications.csv') }
+      let(:input_text) { "8\n#{invalid_path}\n7\n" }
+
+      it 'displays the validation error without completing the export' do
+        cli.run
+
+        expect(output.string).to include('Error: Export directory does not exist')
+        expect(output.string).not_to include('Export Applications to CSV completed.')
       end
     end
   end
