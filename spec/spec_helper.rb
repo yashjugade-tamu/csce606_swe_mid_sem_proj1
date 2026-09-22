@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tmpdir'
+
 if ENV['COVERAGE'] == 'true'
   require 'coverage'
   Coverage.start(lines: true)
