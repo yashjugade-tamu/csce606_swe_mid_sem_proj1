@@ -230,3 +230,34 @@ Notes:
   keep the in-memory collection as the active working state during the session.
 - Verified the full project suite passes with 66 examples and 0 failures after the
   persistence update.
+
+## Session 9 — 2026-09-21
+
+Driver: Yash Jugade
+
+Navigator: Varsha Goalla
+
+Work completed:
+
+- Implemented User Story 10 for CSV export on the `US10` branch.
+- Added a `CSVExporter` to write job applications to CSV with the required header
+  and rows.
+- Integrated CSV export into the CLI menu and allowed the user to provide a custom
+  export path.
+- Kept the default export behavior aligned with user expectations by writing to the
+  Downloads directory when no custom path is supplied.
+- Added validation so invalid directory paths raise a `ValidationError` instead of
+  creating a broken export.
+- Added RSpec coverage for valid exports, empty exports, custom paths, and invalid
+  export directories.
+
+Notes:
+
+- Kept test artifacts isolated by writing CSV specs to a file under the `spec`
+  directory rather than into the real user Downloads folder.
+- Kept the real app behavior user-friendly by exporting to `Downloads` by default,
+  which mimics a normal downloaded file on both Windows and macOS.
+- Kept the manager focused on application state while the exporter owns the CSV
+  formatting and file-writing logic.
+- Verified the project suite passes with the export feature and the refactored
+  responsibility split in place.
