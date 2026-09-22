@@ -4,6 +4,13 @@
     "company": "Netflix",
     "position": "Intern",
     "application_date": "2026-09-28",
-    "status": "Interview"
+    "status": "Rejected"
+  },
+  {
+    "id": 3,
+    "company": "Microsoft",
+    "position": "SDE",
+    "application_date": "2026-09-30",
+    "status": "Offer"
   }
 ]
