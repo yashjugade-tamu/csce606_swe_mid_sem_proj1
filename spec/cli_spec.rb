@@ -1,6 +1,8 @@
 require_relative 'spec_helper'
 
 describe JobTrack::CLI do
+  let(:data_path) { File.join(Dir.mktmpdir, 'applications.json') }
+
   subject(:cli) do
     described_class.new(
       manager: manager,
@@ -9,7 +11,7 @@ describe JobTrack::CLI do
     )
   end
 
-  let(:manager) { JobTrack::ApplicationManager.new }
+  let(:manager) { JobTrack::ApplicationManager.new(data_path: data_path) }
   let(:output) { StringIO.new }
   let(:input) { StringIO.new(input_text) }
 
