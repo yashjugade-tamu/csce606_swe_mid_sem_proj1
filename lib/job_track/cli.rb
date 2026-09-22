@@ -10,7 +10,8 @@ module JobTrack
       '4' => ['Update Application Status', :update_application_status],
       '5' => ['Delete Application', :delete_application],
       '6' => ['Application Statistics', :application_statistics],
-      '7' => ['Exit', :exit]
+      '7' => ['Exit', :exit],
+      '8' => ['Export Applications to CSV', :export_applications_to_csv]
     }.freeze
 
     def initialize(manager:, input: $stdin, output: $stdout)
@@ -105,6 +106,12 @@ module JobTrack
       statistics[:status_counts].each do |status, count|
         @output.puts "#{status}: #{count}"
       end
+    end
+
+    def export_applications_to_csv
+      custom_path = prompt('Export path (press Enter for default Downloads folder)')
+      exported_path = @manager.export_to_csv(custom_path)
+      @output.puts "CSV export saved to: #{exported_path}"
     end
 
     def prompt(label)
