@@ -1,7 +1,8 @@
 require_relative 'spec_helper'
 
 describe JobTrack::ApplicationManager do
-  subject(:manager) { described_class.new }
+  let(:data_path) { File.join(Dir.mktmpdir, 'applications.json') }
+  subject(:manager) { described_class.new(data_path: data_path) }
 
   let(:valid_attributes) do
     {
@@ -45,6 +46,61 @@ describe JobTrack::ApplicationManager do
   it 'returns an empty structured result when no applications exist' do
     expect(manager.read_all_applications).to eq([])
     expect { manager.print_applications }.not_to raise_error
+  end
+
+  it 'saves applications to JSON with all required fields' do
+    manager.add_application(**valid_attributes)
+    manager.add_application(company: 'Netflix', position: 'Data Scientist', application_date: '2026-08-16', status: 'Interview')
+
+    saved_data = JSON.parse(File.read(data_path))
+
+    expect(saved_data).to include(
+      {
+        'id' => 1,
+        'company' => 'Google',
+        'position' => 'Software Engineer Intern',
+        'application_date' => '2026-08-15',
+        'status' => 'Applied'
+      },
+      {
+        'id' => 2,
+        'company' => 'Netflix',
+        'position' => 'Data Scientist',
+        'application_date' => '2026-08-16',
+        'status' => 'Interview'
+      }
+    )
+  end
+
+  it 'loads applications from JSON on initialization and restores their values' do
+    File.write(data_path, JSON.generate([
+      {
+        'id' => 7,
+        'company' => 'Amazon',
+        'position' => 'Platform Engineer',
+        'application_date' => '2026-09-02',
+        'status' => 'Offer'
+      }
+    ]))
+
+    loaded_manager = described_class.new(data_path: data_path)
+    restored = loaded_manager.read_all_applications.first
+
+    expect(loaded_manager.applications.length).to be >= 1
+    expect(restored[:id]).to eq(7)
+    expect(restored[:company]).to eq('Amazon')
+    expect(restored[:position]).to eq('Platform Engineer')
+    expect(restored[:application_date]).to eq(Date.new(2026, 9, 2))
+    expect(restored[:status]).to eq('Offer')
+  end
+
+  it 'starts with an empty collection when the JSON file does not exist' do
+    missing_path = File.join(Dir.mktmpdir, 'missing.json')
+    empty_manager = described_class.new(data_path: missing_path)
+
+    expect(empty_manager.applications).to eq([])
+    expect(empty_manager.read_all_applications).to eq([])
+    expect(empty_manager.instance_variable_get(:@next_id)).to eq(1)
   end
 
   it 'prints all applications in a terminal-friendly format' do
