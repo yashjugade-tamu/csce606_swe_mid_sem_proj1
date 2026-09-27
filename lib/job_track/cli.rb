@@ -3,6 +3,7 @@
 module JobTrack
   # Displays the terminal menu and routes the user's menu selections.
   class CLI
+    # Menu actions available to the user in the main terminal interface.
     MENU_OPTIONS = {
       '1' => ['Add Application', :add_application],
       '2' => ['View Applications', :view_applications],
@@ -20,6 +21,7 @@ module JobTrack
       @output = output
     end
 
+    # Runs the interactive program loop until the user exits.
     def run
       loop do
         display_main_menu
@@ -58,6 +60,7 @@ module JobTrack
       @output.puts "Error: #{e.message}"
     end
 
+    # Asks for application details and creates a new record in the manager.
     def add_application
       application = @manager.add_application(
         company: prompt('Company'),

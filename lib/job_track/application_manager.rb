@@ -6,10 +6,12 @@ module JobTrack
   class ApplicationManager
     attr_reader :applications
 
+    # Fields that can be searched for matching applications.
     VALID_SEARCH_FIELDS = %w[company position status].freeze
 
     DEFAULT_DATA_PATH = 'data/applications.json'.freeze
 
+    # Creates the in-memory store and loads any saved records from disk.
     def initialize(data_path: DEFAULT_DATA_PATH)
       @applications = []
       @next_id = 1
@@ -17,6 +19,7 @@ module JobTrack
       load_from_json
     end
 
+    # Adds a new application and saves the updated list to JSON.
     def add_application(company:, position:, application_date:, status:)
       application = Application.new(
         id: @next_id,
@@ -31,6 +34,7 @@ module JobTrack
       application
     end
 
+    # Finds an application by ID and updates its status.
     def update_application_status(application_id, new_status)
       normalized_id = Integer(application_id)
       application = applications.find { |candidate| candidate.id == normalized_id }
@@ -43,6 +47,7 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
 
+    # Removes an application by ID and persists the updated list.
     def delete_application(application_id)
       normalized_id = Integer(application_id)
       application = applications.find { |candidate| candidate.id == normalized_id }
@@ -119,6 +124,7 @@ module JobTrack
       end
     end
 
+    # Returns applications whose selected field contains the given search text.
     def search_applications(query, field: 'company')
       search_field = field.to_s.strip
       search_value = query.to_s.strip
@@ -144,6 +150,7 @@ module JobTrack
       results
     end
 
+    # Displays applications in a simple terminal table or a friendly empty-state message.
     def print_applications(
       applications = read_all_applications,
       output: $stdout,

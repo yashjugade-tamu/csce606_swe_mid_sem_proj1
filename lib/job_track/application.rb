@@ -6,10 +6,12 @@ module JobTrack
 
   # Represents one validated job or internship application.
   class Application
+    # Allowed lifecycle states for each job application.
     STATUSES = ["Applied", "Interview", "Offer", "Rejected"]
 
     attr_reader :id, :company, :position, :application_date, :status
 
+    # Validates and stores one application record.
     def initialize(id:, company:, position:, application_date:, status:)
       @id = validate_id(id)
       @company = validate_required_text(company, 'Company')
@@ -18,6 +20,7 @@ module JobTrack
       @status = validate_status(status)
     end
 
+    # Updates the application stage after validating the new status.
     def update_status(new_status)
       @status = validate_status(new_status)
       self
