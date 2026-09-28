@@ -19,7 +19,7 @@ module JobTrack
       load_from_json
     end
 
-    # Adds a new application and saves the updated list to JSON.
+    # Creates an application, adds it to memory, and saves the collection to JSON.
     def add_application(company:, position:, application_date:, status:)
       application = Application.new(
         id: @next_id,
@@ -34,7 +34,7 @@ module JobTrack
       application
     end
 
-    # Finds an application by ID and updates its status.
+    # Finds an application by ID and updates its status in memory, then saves the collection to JSON.
     def update_application_status(application_id, new_status)
       normalized_id = Integer(application_id)
       application = applications.find { |candidate| candidate.id == normalized_id }
@@ -47,7 +47,7 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
 
-    # Removes an application by ID and persists the updated list.
+    # Deletes the matching application by ID from memory and saves the collection to JSON.
     def delete_application(application_id)
       normalized_id = Integer(application_id)
       application = applications.find { |candidate| candidate.id == normalized_id }
@@ -60,6 +60,7 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
 
+    # Restores records and IDs, treating invalid JSON syntax as an empty collection.
     def load_from_json
       return unless File.exist?(@data_path)
 
@@ -79,6 +80,7 @@ module JobTrack
       @next_id = 1
     end
 
+    # Replaces the data file through a temporary file to avoid partial JSON writes.
     def save_to_json
       directory = File.dirname(@data_path)
       Dir.mkdir(directory) unless directory == '.' || Dir.exist?(directory)
@@ -102,6 +104,7 @@ module JobTrack
       CSVExporter.new.export(@applications, output_path: output_path)
     end
 
+    # Includes zero-count statuses so the CLI always displays a stable report.
     def application_statistics
       status_counts = Application::STATUSES.to_h { |status| [status, 0] }
       applications.each { |application| status_counts[application.status] += 1 }
@@ -150,7 +153,7 @@ module JobTrack
       results
     end
 
-    # Displays applications in a simple terminal table or a friendly empty-state message.
+    # Prints application hashes as rows or displays the supplied empty-state message.
     def print_applications(
       applications = read_all_applications,
       output: $stdout,

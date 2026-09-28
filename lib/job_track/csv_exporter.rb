@@ -1,6 +1,7 @@
 require 'csv'
 
 module JobTrack
+  # Serializes application records into a CSV file.
   class CSVExporter
     # Column names written to the exported CSV file.
     HEADERS = %w[id company position application_date status].freeze
@@ -33,6 +34,7 @@ module JobTrack
       candidate
     end
 
+    # Selects the current user's Downloads folder on Windows and Unix-like systems.
     def default_path
       downloads_dir = if Gem.win_platform?
                         ENV['USERPROFILE'] || Dir.home
@@ -43,6 +45,7 @@ module JobTrack
       File.join(downloads_dir, 'Downloads', 'applications_export.csv')
     end
 
+    # Rejects missing directories and directory-only paths before opening the file.
     def validate_output_path!(path)
       raise ValidationError, 'Export path cannot be empty.' if path.to_s.strip.empty?
 

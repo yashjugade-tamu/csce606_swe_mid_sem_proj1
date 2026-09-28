@@ -15,6 +15,7 @@ module JobTrack
       '8' => ['Export Applications to CSV', :export_applications_to_csv]
     }.freeze
 
+    # Injectable streams support normal terminals and isolated acceptance tests.
     def initialize(manager:, input: $stdin, output: $stdout)
       @manager = manager
       @input = input
@@ -36,6 +37,7 @@ module JobTrack
 
     private
 
+    # Displays every numbered option in the main menu.
     def display_main_menu
       @output.puts 'JobTrack Main Menu'
       MENU_OPTIONS.each do |number, (label, _action)|
@@ -43,11 +45,13 @@ module JobTrack
       end
     end
 
+    # Normalizes surrounding whitespace while preserving end-of-input as nil.
     def read_selection
       @output.print 'Choose an option: '
       @input.gets&.strip
     end
 
+    # Confirms and dispatches valid choices while keeping expected errors in the loop.
     def route(selection)
       option = MENU_OPTIONS[selection]
       return @output.puts('Invalid menu selection. Please try again.') unless option
@@ -71,6 +75,7 @@ module JobTrack
       @output.puts "Application ##{application.id} added successfully."
     end
 
+    # Reuses manager formatting so View and Search display identical table columns.
     def view_applications
       @manager.print_applications(
         @manager.read_all_applications,
@@ -79,6 +84,7 @@ module JobTrack
       )
     end
 
+    # Prompts for a search field and value, then prints only matching records.
     def search_applications
       field = prompt('Search field (company/position/status)')
       query = prompt('Search value')
@@ -90,6 +96,7 @@ module JobTrack
       )
     end
 
+    #  Prompts for an ID and the new status, then updates an application's status using its unique ID.
     def update_application_status
       application = @manager.update_application_status(
         prompt('Application ID'),
@@ -98,11 +105,13 @@ module JobTrack
       @output.puts "Application ##{application.id} status updated to #{application.status}."
     end
 
+    # Prompts for an ID and confirms the record removed by the manager.
     def delete_application
       application = @manager.delete_application(prompt('Application ID'))
       @output.puts "Application ##{application.id} deleted successfully."
     end
 
+    # Prints every status count along with the total number of applications.
     def application_statistics
       statistics = @manager.application_statistics
       @output.puts "Total Applications: #{statistics[:total]}"
@@ -111,12 +120,14 @@ module JobTrack
       end
     end
 
+    # Prompts for an export path and saves all applications to a CSV file.
     def export_applications_to_csv
       custom_path = prompt('Export path (press Enter for default Downloads folder)')
       exported_path = @manager.export_to_csv(custom_path)
       @output.puts "CSV export saved to: #{exported_path}"
     end
 
+    # Reads one line of input from the user after displaying a prompt.
     def prompt(label)
       @output.print "#{label}: "
       @input.gets&.chomp

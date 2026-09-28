@@ -20,7 +20,7 @@ module JobTrack
       @status = validate_status(status)
     end
 
-    # Updates the application stage after validating the new status.
+    # Updates the status only after validation, preserving the previous value on failure.
     def update_status(new_status)
       @status = validate_status(new_status)
       self
@@ -28,6 +28,7 @@ module JobTrack
 
     private
 
+    # Converts string IDs from terminal or JSON input and rejects non-positive IDs.
     def validate_id(value)
       id = Integer(value)
       raise ValidationError, 'Application ID must be positive' unless id.positive?
@@ -37,6 +38,7 @@ module JobTrack
       raise ValidationError, 'Application ID must be a whole number'
     end
 
+    # Trims required text fields and rejects blank values.
     def validate_required_text(value, field_name)
       text = value.to_s.strip
       raise ValidationError, "#{field_name} cannot be empty" if text.empty?
@@ -44,12 +46,14 @@ module JobTrack
       text
     end
 
+    # Uses strict ISO 8601 parsing to ensure dates are correctly formatted and valid.
     def validate_date(value)
       Date.iso8601(value.to_s)
     rescue Date::Error
       raise ValidationError, 'Application date must be a valid date in YYYY-MM-DD format'
     end
 
+    # Matches statuses without case sensitivity and returns the canonical spelling.
     def validate_status(value)
       status = STATUSES.find { |candidate| candidate.casecmp?(value.to_s.strip) }
       raise ValidationError, "Status must be one of: #{STATUSES.join(', ')}" unless status

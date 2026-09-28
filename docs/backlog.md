@@ -1,6 +1,8 @@
-##Project Tracker: https://github.com/users/yashjugade-tamu/projects/1/views/1
+# JobTrack Backlog
 
-# JobTrack User Stories
+Project tracker: https://github.com/users/yashjugade-tamu/projects/1/views/1
+
+## User Stories
 
 ## User Story 1 - Add a Job Application
 
@@ -150,3 +152,4 @@
 *Completed:* 30 points  
 *Remaining:* 0 points  
 *Total:* 30 points
+
