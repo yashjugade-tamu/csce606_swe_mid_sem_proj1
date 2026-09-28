@@ -1,0 +1,120 @@
+
+Randomized with seed 53908
+
+JobTrack::CSVExporter
+  exports applications with the required columns into a CSV file
+  creates a valid header-only CSV file when no applications exist
+
+JobTrack::CLI
+  when option 2 is selected
+    accepts the selection and returns to the main menu
+  when a selection contains surrounding whitespace
+    recognizes the selection
+  when option 1 is selected
+    accepts the selection and returns to the main menu
+  when option 3 is selected
+    accepts the selection and returns to the main menu
+  when an invalid selection is followed by Exit
+    displays an error and returns to the main menu
+  when option 4 is selected
+    accepts the selection and returns to the main menu
+  application statistics
+    when applications exist in every status
+      displays the total and exact status breakdown
+    when the application collection is empty
+      displays zero for the total and every status
+  when the input stream closes
+    terminates normally
+  when option 5 is selected
+    accepts the selection and returns to the main menu
+  when several operations are selected before Exit
+    continues running until Exit is selected
+  when option 6 is selected
+    accepts the selection and returns to the main menu
+  application-operation integration
+    when an operation receives invalid input
+      displays the manager error and returns to the menu
+    when applications are searched
+      delegates the search and displays matching applications
+    when View is selected with an empty collection
+      displays the empty-collection result
+    when an application is added and then viewed
+      delegates creation and displays the saved application
+    when an application status is updated
+      delegates the update and displays the updated application
+    when the application data is exported to CSV with a custom valid path
+      writes the CSV to the provided file path
+    when a search has no matching applications
+      displays the no-results message and completes normally
+    when a search value is empty
+      displays the validation error without completing the operation
+    when the application exits after adding data
+      saves the current application collection before terminating
+    when the application data export path is invalid
+      displays the validation error without completing the export
+    when an update uses an unknown application ID
+      displays the manager error without completing the operation
+  when Exit is selected
+    displays every required main-menu operation
+
+JobTrack::Application
+  normalizes the case of a permitted status
+  rejects an invalid status
+  rejects an empty company
+  creates an application with valid attributes
+  rejects an empty position
+  rejects an impossible date
+  rejects missing company and position values with field-specific errors
+  accepts every permitted status
+  rejects an invalid ID
+  #update_status
+    normalizes the case of a permitted status
+    preserves all non-status application information
+    rejects an unsupported status and keeps the original status
+    updates the application to a valid new status
+    rejects blank or missing statuses without changing the application
+    accepts every permitted status
+
+JobTrack::ApplicationManager
+  assigns unique sequential IDs
+  rejects invalid or empty search values
+  loads applications from JSON on initialization and restores their values
+  returns an empty result when a search has no matches
+  keeps the collection unchanged after each kind of invalid input
+  starts with an empty collection when the JSON file does not exist
+ID | Company | Position | Application Date | Status
+1 | Google | Software Engineer Intern | 2026-08-15 | Applied
+2 | Netflix | Software Engineer Intern | 2026-08-15 | Applied
+  prints all applications in a terminal-friendly format
+  searches applications by position and only returns matching applications
+No applications found.
+  returns an empty structured result when no applications exist
+  adds an application to the collection
+  searches applications by status and only returns matching applications
+  returns every existing application as a structured array of details
+  searches applications by company and only returns matching applications
+  prints to a supplied output stream with a custom empty message
+  does not add or consume an ID for an invalid application
+  saves applications to JSON with all required fields
+  #delete_application
+    removes the application identified by ID and leaves other applications intact
+    accepts a numeric ID entered as a string
+    rejects an unknown ID without deleting any other application
+  #update_application_status
+    rejects malformed or missing IDs without modifying the collection
+    rejects an unsupported status and keeps the original status
+    rejects an unknown ID without modifying any application
+    accepts a numeric ID entered as a string
+    updates the application identified by ID
+    preserves other fields and does not modify another application
+    accepts every permitted status
+  #application_statistics
+    returns the total and a count for every application status
+    returns zero for the total and every status when the collection is empty
+    reflects the current status after an application is updated
+Statement coverage: 95.28% (202/212)
+
+Finished in 0.03019 seconds (files took 0.08461 seconds to load)
+70 examples, 0 failures
+
+Randomized with seed 53908
