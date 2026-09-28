@@ -1,4 +1,3 @@
-
 require 'json'
 
 module JobTrack
@@ -11,7 +10,7 @@ module JobTrack
 
     DEFAULT_DATA_PATH = 'data/applications.json'.freeze
 
-    # Creates the in-memory store and loads any saved records from disk.
+    # Initializes the manager, sets up the empty collection, and loads any previously saved records from disk.
     def initialize(data_path: DEFAULT_DATA_PATH)
       @applications = []
       @next_id = 1
@@ -34,7 +33,7 @@ module JobTrack
       application
     end
 
-    # Finds an application by ID and updates its status in memory, then saves the collection to JSON.
+    # Finds an application by ID, updates its status in memory, and saves the collection to JSON.
     def update_application_status(application_id, new_status)
       normalized_id = Integer(application_id)
       application = applications.find { |candidate| candidate.id == normalized_id }
@@ -60,7 +59,7 @@ module JobTrack
       raise ValidationError, "Application with ID #{application_id} was not found"
     end
 
-    # Restores records and IDs, treating invalid JSON syntax as an empty collection.
+    # Restores records and IDs from JSON, treating invalid JSON syntax as an empty collection.
     def load_from_json
       return unless File.exist?(@data_path)
 
@@ -100,6 +99,7 @@ module JobTrack
       File.rename(temp_path, @data_path)
     end
 
+    # Exports the current in-memory application list to CSV and returns the generated file path.
     def export_to_csv(output_path = nil)
       CSVExporter.new.export(@applications, output_path: output_path)
     end
@@ -115,6 +115,7 @@ module JobTrack
       }
     end
 
+    # Returns the application collection in a hash format that is easy to display or inspect.
     def read_all_applications
       @applications.map do |application|
         {
@@ -127,7 +128,7 @@ module JobTrack
       end
     end
 
-    # Returns applications whose selected field contains the given search text.
+    # Searches the collection for applications whose chosen field contains the requested text.
     def search_applications(query, field: 'company')
       search_field = field.to_s.strip
       search_value = query.to_s.strip

@@ -11,7 +11,7 @@ module JobTrack
 
     attr_reader :id, :company, :position, :application_date, :status
 
-    # Validates and stores one application record.
+    # Creates a fully validated application record from the provided fields and business rules.
     def initialize(id:, company:, position:, application_date:, status:)
       @id = validate_id(id)
       @company = validate_required_text(company, 'Company')
@@ -20,7 +20,7 @@ module JobTrack
       @status = validate_status(status)
     end
 
-    # Updates the status only after validation, preserving the previous value on failure.
+    # Updates the status only after validation, preserving the prior value if the new status is invalid.
     def update_status(new_status)
       @status = validate_status(new_status)
       self
@@ -28,7 +28,7 @@ module JobTrack
 
     private
 
-    # Converts string IDs from terminal or JSON input and rejects non-positive IDs.
+    # Converts a string or numeric ID into a positive integer and rejects invalid input.
     def validate_id(value)
       id = Integer(value)
       raise ValidationError, 'Application ID must be positive' unless id.positive?
@@ -38,7 +38,7 @@ module JobTrack
       raise ValidationError, 'Application ID must be a whole number'
     end
 
-    # Trims required text fields and rejects blank values.
+    # Trims required text fields and rejects blank values before storing the record.
     def validate_required_text(value, field_name)
       text = value.to_s.strip
       raise ValidationError, "#{field_name} cannot be empty" if text.empty?
@@ -46,21 +46,19 @@ module JobTrack
       text
     end
 
-    # Uses strict ISO 8601 parsing to ensure dates are correctly formatted and valid.
+    # Uses strict ISO 8601 parsing to ensure the date is correctly formatted and valid.
     def validate_date(value)
       Date.iso8601(value.to_s)
     rescue Date::Error
       raise ValidationError, 'Application date must be a valid date in YYYY-MM-DD format'
     end
 
-    # Matches statuses without case sensitivity and returns the canonical spelling.
+    # Matches the input to the canonical status list without case sensitivity.
     def validate_status(value)
       status = STATUSES.find { |candidate| candidate.casecmp?(value.to_s.strip) }
       raise ValidationError, "Status must be one of: #{STATUSES.join(', ')}" unless status
 
       status
     end
-
   end
-    
 end

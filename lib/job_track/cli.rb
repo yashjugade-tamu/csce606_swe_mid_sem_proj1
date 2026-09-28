@@ -15,14 +15,15 @@ module JobTrack
       '8' => ['Export Applications to CSV', :export_applications_to_csv]
     }.freeze
 
-    # Injectable streams support normal terminals and isolated acceptance tests.
+    # Initializes the CLI with a manager and the input/output streams used for user interaction.
+    # This supports both normal terminal workflows and isolated test environments.
     def initialize(manager:, input: $stdin, output: $stdout)
       @manager = manager
       @input = input
       @output = output
     end
 
-    # Runs the interactive program loop until the user exits.
+    # Runs the interactive menu loop until the user chooses to exit the application.
     def run
       loop do
         display_main_menu
@@ -45,7 +46,7 @@ module JobTrack
       end
     end
 
-    # Normalizes surrounding whitespace while preserving end-of-input as nil.
+    # Reads a single menu selection from the user and strips surrounding whitespace.
     def read_selection
       @output.print 'Choose an option: '
       @input.gets&.strip
@@ -64,7 +65,7 @@ module JobTrack
       @output.puts "Error: #{e.message}"
     end
 
-    # Asks for application details and creates a new record in the manager.
+    # Collects application details from the terminal and creates a new record through the manager.
     def add_application
       application = @manager.add_application(
         company: prompt('Company'),
@@ -96,7 +97,7 @@ module JobTrack
       )
     end
 
-    #  Prompts for an ID and the new status, then updates an application's status using its unique ID.
+    # Prompts for an ID and the new status, then updates an application's status using its unique ID.
     def update_application_status
       application = @manager.update_application_status(
         prompt('Application ID'),

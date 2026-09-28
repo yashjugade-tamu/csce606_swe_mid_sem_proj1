@@ -6,7 +6,7 @@ module JobTrack
     # Column names written to the exported CSV file.
     HEADERS = %w[id company position application_date status].freeze
 
-    # Writes all applications to CSV using a valid destination path.
+    # Exports the current application list to CSV and returns the destination path that was written.
     def export(applications, output_path: nil)
       resolved_path = resolve_output_path(output_path)
       directory = File.dirname(resolved_path)
@@ -26,7 +26,7 @@ module JobTrack
 
     private
 
-    # Selects the output path and validates that it points to a writable file.
+    # Chooses the export path, applies the default Downloads location when needed, and validates the destination.
     def resolve_output_path(output_path)
       candidate = output_path.to_s.strip
       candidate = default_path if candidate.empty?
@@ -62,7 +62,7 @@ module JobTrack
       resolved_path
     end
 
-    # Converts one application object into one CSV row.
+    # Converts one application object or hash into a single CSV row with the standard output fields.
     def extract_row(application)
       if application.respond_to?(:to_h)
         details = application.to_h
