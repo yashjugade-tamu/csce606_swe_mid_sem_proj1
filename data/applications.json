@@ -12,5 +12,12 @@
     "position": "SDE",
     "application_date": "2026-09-30",
     "status": "Offer"
+  },
+  {
+    "id": 4,
+    "company": "Netflix",
+    "position": "Computer Scientist",
+    "application_date": "2026-09-28",
+    "status": "Applied"
   }
 ]
