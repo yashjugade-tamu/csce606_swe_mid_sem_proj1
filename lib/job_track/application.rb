@@ -48,7 +48,10 @@ module JobTrack
 
     # Uses strict ISO 8601 parsing to ensure the date is correctly formatted and valid.
     def validate_date(value)
-      Date.iso8601(value.to_s)
+      date = Date.iso8601(value.to_s)
+      raise ValidationError, 'Application date cannot be in the future' if date > Date.today
+
+      date
     rescue Date::Error
       raise ValidationError, 'Application date must be a valid date in YYYY-MM-DD format'
     end

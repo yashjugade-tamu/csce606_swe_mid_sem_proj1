@@ -178,6 +178,16 @@ describe JobTrack::ApplicationManager do
     expect(manager.applications.length).to eq(1)
   end
 
+  it 'rejects a future application date without adding or consuming an ID' do
+    future_date = (Date.today + 1).iso8601
+
+    expect { add_application(application_date: future_date) }
+      .to raise_error(JobTrack::ValidationError, 'Application date cannot be in the future')
+
+    expect(manager.applications).to be_empty
+    expect(add_application.id).to eq(1)
+  end
+
   it 'keeps the collection unchanged after each kind of invalid input' do
     invalid_changes = [
       { company: ' ' },
